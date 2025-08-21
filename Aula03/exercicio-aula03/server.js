@@ -18,6 +18,28 @@
  // req - requisição
  // res de resposta 
  app.get('/',(req,res)=>{
-    res.send('Bem vindo à minha API!');
+    res.send('Sistema planta 4.0');
     
  });
+
+ app.listen(port,()=>{
+    console.log(`Servidor rodando na porta ${port}`);
+});
+
+// Rota para cadastro do produto
+ app.post('/exibeprodutos',(req,res)=>{
+    const {nome_produto,quantidade} = req.body;
+    res.send(`nome produto: ${nome_produto},quantidade ${quantidade}`);
+    if(!nome_produto || !quantidade){
+        return res.status(400).json({error:'Informe o nome do produto e a quantidade'})
+    }
+    const novo = {nome_produto,quantidade};
+    dados.push(novo);
+    res.status(201).json({message:'Dados salvos com sucesso !',data:novo})
+ });
+
+  // Rota get para exibir os dados
+
+ app.get('/exibeprodutos',(req,res)=>{
+    res.json(dados);
+ })
