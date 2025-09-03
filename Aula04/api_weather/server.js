@@ -22,7 +22,7 @@ app.get('/weather',async(req,res)=>{
     }
     try {
         // requisição para pegar as condiçoes climaticas de uma cidade
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&APPID=${apiKey}&units=metric&lang=pt_br`);
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${apiKey}&units=metric&lang=pt_br`);
         // variavel para armazenar a resposta da api
         const data = response.data;
         const temperature = data.main?.temp ??0;
@@ -77,7 +77,9 @@ app.get('/multiple',async(req,res) => {
 });
 
 app.get('/alert', async(req, res)=> {
-    const(!city || !country) {
+    const {city, country} = req.query;
+
+    if (!city || !country) {
         return res.status(400).json({error: 'Informe cidade e país'});
     }
 
@@ -86,9 +88,14 @@ app.get('/alert', async(req, res)=> {
 
         const temp = response.data.main?.temp ?? 0;
 
-        let alert = temp > 30 ? 'Quente' : temp < 10 ? 'Frio'
+        let alert = temp > 30 ? 'Quente' : temp < 10 ? 'Frio' : 'Agradavel';
+
+        res.json({city, temperature: temp, alert});
+
+    } catch (err) {
+        res.status(500).json({error: 'Erro ao obter dados do clima'})
     }
-})
+});
 
 
 app.listen(PORT,()=>console.log(`Servidor rodando em http://localhost:${PORT}/`));
