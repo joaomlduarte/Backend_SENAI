@@ -7,7 +7,7 @@ const usuarioRoutes = require("./routes/usuario"); // importa a rota do usuario
 const maquinaRoutes = require("./routes/maquina"); // importa a rota maquina
 
 const app = express(); // cria a variavel app para armazenar o express
-const PORT = 4000;
+const PORT = 4001;
 
 // Middleware para interpretar o Json
 app.use(express.json());
