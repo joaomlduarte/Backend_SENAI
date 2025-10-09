@@ -1,27 +1,39 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import mongoose from "mongoose";
+import booksRouter from "./routes/books.js";
 
 const app = express();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-
-// "Banco" em memória
-let livros = []; //{id, titulo, autor, ano}
-let nextId = 1;
-
-// HEALTHCHECK
-app.get("/", (req, res) => {
-    res.json({ok: true, api:"Livros v1"});
+// Healthcheck
+app.get("/", (_req, res) => {
+  res.json({ ok: true, api: "Library API v1" });
 });
 
+// Rotas
+app.use("/books", booksRouter);
 
-// CREATE - POST /livros
-app.post("/livros", (req, res) => {
-    const {titulo, autor, ano} = req.body;
+// Conexão Mongo e start do servidor
+const { MONGODB_URI, PORT = 3000 } = process.env;
 
-    if(!titulo || !autor || !ano){
-        return res.status(400).json({ erro: "titulo, autor e ano são obrigatórios"})
-    }
-    const novo
-})
+async function start() {
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      dbName: undefined // opcional quando já vem no URI
+    });
+    console.log("MongoDB conectado");
+    app.listen(PORT, () => {
+      console.log(`API rodando em http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error(" Erro ao conectar no MongoDB:", err.message);
+    process.exit(1);
+  }
+}
+
+start();
