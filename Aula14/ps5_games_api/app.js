@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 
 // Conectar ao MongoDB
-mongoose.connect('mongodb+srv://joao84838:Vanderlandi22@cluster0.7lh8kod.mongodb.net/ps5_games', {
+mongoose.connect('', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
